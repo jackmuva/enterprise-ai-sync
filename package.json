@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@workos-inc/authkit-nextjs": "^2.3.3",
+    "jose": "^6.0.11",
+    "lucide-react": "^0.511.0",
     "next": "15.3.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
