@@ -1,5 +1,5 @@
-import { userWithToken } from "@/lib/utils";
-import { UserRoundCheck } from "lucide-react";
+import { userWithToken } from "@/app/actions/auth";
+import { UserDropdown } from "@/app/components/user-dropdown";
 import Image from "next/image";
 
 export const Navbar = async () => {
@@ -16,12 +16,7 @@ export const Navbar = async () => {
           Enterprise AI
         </div>
       </div>
-      <div className="flex items-center px-3">
-        <div className="rounded-md bg-muted px-3 py-2 font-semibold flex space-x-2 cursor-pointer">
-          <UserRoundCheck size={20} />
-          <div>{user.user ? user.user.firstName : "ERROR"}</div>
-        </div>
-      </div>
+      <UserDropdown user={user} />
     </div>
   );
 }
