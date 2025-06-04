@@ -1,6 +1,6 @@
 "use client";
 
-import { UserRoundCheck, LogOut, Settings, User } from "lucide-react";
+import { UserRoundCheck, LogOut, } from "lucide-react";
 import { useState } from "react";
 import { handleSignOut } from "@/app/actions/auth";
 
@@ -33,8 +33,7 @@ export const UserDropdown = ({ user }: UserDropdownProps) => {
       {dropdown && (
         <>
           <div className="fixed inset-0 z-10" onClick={closeDropdown} />
-
-          <div className="absolute right-0 mt-2 w-48 bg-background border rounded-md shadow-lg z-20">
+          <div className="absolute right-0 mt-2 w-48 bg-background border border-slate-300 dark:border-slate-700 rounded-md shadow-lg z-20">
             <div className="py-1">
               <div className="px-4 py-2">
                 <div className="text-sm font-medium">
