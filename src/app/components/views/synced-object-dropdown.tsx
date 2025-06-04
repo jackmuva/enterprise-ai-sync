@@ -3,7 +3,7 @@ import { SyncedObject } from "@/db/schema"
 export const SyncedObjectDropdown = ({ syncedObject, session }: { syncedObject: SyncedObject, session: { user: any, paragonUserToken?: string } }) => {
 
   return (
-    <tr key={syncedObject.id + "data"} className="border-b">
+    <tr key={syncedObject.id + "data"} className="border-b border-slate-300 dark:border-slate-700">
       <td colSpan={3}>
         <div className="flex flex-col space-y-1">
           <div className="font-semibold">Data: </div>

@@ -1,7 +1,9 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import { Bot } from 'lucide-react';
 import { useEffect } from 'react';
+import Markdown from 'react-markdown';
 
 export default function Chat() {
 	const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -28,32 +30,32 @@ export default function Chat() {
 	}, [handleSubmit]);
 
 	return (
-		<main className="w-dvw flex min-h-screen pt-24 px-3 sm:items-start">
-			<div className="flex flex-col max-w-screen w-[700px] mx-auto stretch">
-				<div className="space-y-4 h-full mb-36 overflow-y-scroll">
+		<main className="w-dvw h-screen flex pt-28 px-3">
+			<div className="flex flex-col max-w-screen w-[700px] mx-auto h-full">
+				<div className="space-y-4 flex-1 overflow-y-auto pr-2">
 					{messages.map(m => (
-						<div key={m.id} className="whitespace-pre-wrap">
+						<div key={m.id} className={`rounded-md p-2 whitespace-pre-wrap ${m.role === "user" ? "bg-muted" : ""}`}>
 							<div>
-								<div className="font-bold">{m.role}</div>
-								<p>
+								<div className="font-bold flex items-center">{m.role !== "user" && <Bot className='mr-1' size={20} />}{m.role}</div>
+								<div className='flex flex-col space-y-0'>
 									{m.content.length > 0 ? (
-										m.content
+										<Markdown>
+											{m.content}
+										</Markdown>
 									) : (
 										<span className="italic font-light">
 											{'calling tool: ' + m?.toolInvocations?.[0].toolName}
 										</span>
 									)}
-								</p>
+								</div>
 							</div>
 						</div>
 					))}
-
-					<div className="shrink-0 min-w-[24px] min-h-[24px]" />
 				</div>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className="flex-shrink-0 py-4">
 					<textarea id="chatTextArea"
 						rows={3}
-						className="bg-muted fixed bottom-0 w-[700px] max-w-screen p-2 mb-8 border border-gray-300 rounded shadow-xl"
+						className="bg-muted w-full p-2 border border-gray-300 rounded shadow-xl"
 						value={input}
 						placeholder="Say something..."
 						onChange={handleInputChange}

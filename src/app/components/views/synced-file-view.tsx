@@ -5,7 +5,6 @@ import { fetcher } from "@/lib/utils";
 import { SyncedObject } from "@/db/schema";
 import { ChevronDown } from "lucide-react";
 import { SyncedObjectDropdown } from "./synced-object-dropdown";
-import { SyncedObjectType } from "./data-table-view";
 import Image from "next/image";
 
 export function SyncedFilesView({ session, selectedObjectType }: { session: { user: any, paragonUserToken?: string }, selectedObjectType: SyncedObjectType }) {
@@ -25,8 +24,8 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
 
 
   return (
-    <div className="py-3 h-80 overflow-y-scroll">
-      <h1 className="text-xl font-semibold mb-2">Files Synced</h1>
+    <div className="rounded-md border border-slate-300 dark:border-slate-700 p-3 h-80 max-w-[900px] overflow-y-scroll">
+      <h1 className="text-xl font-semibold mb-2">Objects Synced</h1>
       {isLoading ? (
         <div className="flex flex-col">
           {[44, 32, 28, 52].map((item) => (
@@ -38,10 +37,10 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
           ))}
         </div>
       ) : (
-        <table className="w-full text-sm table-fixed border-b border-slate-300 dark:border-slate-700">
+        <table className="w-full text-sm table-fixed">
           <thead className="border-b bg-muted border-slate-300 dark:border-slate-700">
             <tr>
-              <th className="p-2 w-36 rounded-tl-md text-left">source</th>
+              <th className="p-2 w-44 rounded-tl-md text-left">source</th>
               <th className="p-2 text-left">filename</th>
               <th className="p-2 text-left rounded-tr-md">updated at</th>
             </tr>
@@ -61,14 +60,14 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
                       <tr className={expandedRow.has(syncedObject.id) ? "" : "border-b border-slate-300 dark:border-slate-700"} key={syncedObject.id}>
                         <td className="text-sm p-2 flex items-center flex-row space-x-1">
                           <ChevronDown size={18} className={expandedRow.has(syncedObject.id) ? "rotate-180" : ""} onClick={() => toggleRow(syncedObject.id)} />
-                          <Image height={25} width={25}
+                          <Image height={22} width={22}
                             src={syncedObject.source === "googledrive" ? "/google-drive-logo.png" :
                               syncedObject.source === "box" ? "/box-logo.webp" : "/dropbox-logo.png"} alt="logo" />
                           <div>
                             {syncedObject.source}
                           </div>
                         </td>
-                        <td className="text-sm p-2 overflow-x-clip">{JSON.parse(syncedObject.data).name}</td>
+                        <td className="text-sm p-2 overflow-hidden whitespace-nowrap text-ellipsis">{JSON.parse(syncedObject.data).name}</td>
                         <td className="text-sm p-2">{new Date(syncedObject.updatedAt.toString()).toString().split("GMT")[0]}</td>
                       </tr>
                       {expandedRow.has(syncedObject.id) &&
