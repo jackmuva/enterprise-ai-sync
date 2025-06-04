@@ -18,6 +18,7 @@
   --destructive: #ef4444;
   --destructive-foreground: #fafafa;
   --border: #e5e5e5;
+  --border-width: 1px;
   --input: #e5e5e5;
   --ring: #171717;
   --radius: 0.5rem;
@@ -66,6 +67,7 @@
     --destructive: #7f1d1d;
     --destructive-foreground: #ededed;
     --border: #262626;
+    --border-width: 1px;
     --input: #262626;
     --ring: #d4d4d8;
   }

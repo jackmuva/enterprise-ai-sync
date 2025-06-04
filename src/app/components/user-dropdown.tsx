@@ -6,12 +6,9 @@ import { handleSignOut } from "@/app/actions/auth";
 
 interface UserDropdownProps {
   user: {
-    user?: {
-      firstName: string;
-      lastName?: string;
-      email?: string;
-    };
-  };
+    user: any,
+    paragonUserToken?: string | undefined
+  },
 }
 
 export const UserDropdown = ({ user }: UserDropdownProps) => {
@@ -27,7 +24,7 @@ export const UserDropdown = ({ user }: UserDropdownProps) => {
 
   return (
     <div className="relative">
-      <div onClick={toggleDropdown} 
+      <div onClick={toggleDropdown}
         className="rounded-md bg-muted px-3 py-2 font-semibold flex space-x-2 cursor-pointer hover:bg-muted/80 transition-colors">
         <UserRoundCheck size={20} />
         <div>{user.user ? user.user.firstName : "ERROR"}</div>
@@ -36,7 +33,7 @@ export const UserDropdown = ({ user }: UserDropdownProps) => {
       {dropdown && (
         <>
           <div className="fixed inset-0 z-10" onClick={closeDropdown} />
-          
+
           <div className="absolute right-0 mt-2 w-48 bg-background border rounded-md shadow-lg z-20">
             <div className="py-1">
               <div className="px-4 py-2">
@@ -51,11 +48,11 @@ export const UserDropdown = ({ user }: UserDropdownProps) => {
               </div>
               <form action={handleSignOut}>
                 <button type="submit"
-                className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-muted cursor-pointer transition-colors">
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-muted cursor-pointer transition-colors">
                   <LogOut size={16} className="mr-2" />
                   Sign out
                 </button>
-                </form>
+              </form>
             </div>
           </div>
         </>
