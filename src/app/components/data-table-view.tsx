@@ -1,6 +1,8 @@
 "use client";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
+import { SyncedFilesView } from "./views/synced-file-view";
+import { ActivityView } from "./views/activity-view";
 
 enum SyncedObjectType {
   FILE_STORAGE = "File Storage",
@@ -35,7 +37,7 @@ export const DataTableView = ({ session }: { session: { user: any, paragonUserTo
               {Object.keys(SyncedObjectType).map((type) => {
                 return (
                   //@ts-ignore
-                  <div className="cursor-pointer hover:bg-muted px-2" onClick={() => setObjectType(SyncedObjectType[type])}>
+                  <div key={type} className="cursor-pointer hover:bg-muted px-2" onClick={() => setObjectType(SyncedObjectType[type])}>
                     {SyncedObjectType[type]}</div>
                 );
               })
@@ -44,6 +46,8 @@ export const DataTableView = ({ session }: { session: { user: any, paragonUserTo
           </>
         )}
       </div>
+      <SyncedFilesView session={session} selectedObjectType={objectType} />
+      <ActivityView session={session} selectedObjectType={objectType} />
     </div>
   );
 }; 

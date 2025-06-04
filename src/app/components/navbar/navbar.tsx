@@ -1,7 +1,7 @@
 import { userWithToken } from "@/app/actions/auth";
-import { UserDropdown } from "@/app/components/user-dropdown";
+import { UserDropdown } from "@/app/components/navbar/user-dropdown";
 import Image from "next/image";
-import { TabBar } from "./tab-bar";
+import { TabBar } from "../navbar/tab-bar";
 
 export const Navbar = async () => {
   const user = await userWithToken();
