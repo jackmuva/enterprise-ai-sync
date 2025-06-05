@@ -37,6 +37,16 @@ export async function getSyncedObjectByUserIdAndObjectType({ id, objectType }: {
   }
 }
 
+export async function getSyncedObjectById({ id }: { id: string, }): Promise<Array<SyncedObject>> {
+  try {
+    return await db.select().from(syncedObject).where(eq(syncedObject.id, id));
+  } catch (error) {
+    console.error("Failed to get user's synced objects from database", error);
+    throw error;
+  }
+}
+
+
 export async function createSyncedObject({
   id,
   externalId,
