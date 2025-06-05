@@ -13,8 +13,8 @@ export async function POST(req: Request) {
 	const result = streamText({
 		model: openai('gpt-4o'),
 		system: `You are a helpful assistant. Check your knowledge base before answering any questions.
-			    Only respond to questions using information from tool calls.
-			    provide sources and filenames if information is used from knowledge base`,
+			    Provide the filenames for all information used from knowledge base at the end 
+			of every response in its own section: "## Sources"`,
 		messages,
 		tools: {
 			ragExternalData: tool({

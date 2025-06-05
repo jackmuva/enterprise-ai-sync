@@ -58,8 +58,9 @@ export const ActivityView = ({ session, selectedObjectType }: { session: { user:
                           </div>
                         </td>
                         <td className="text-sm p-2 items-center">
-                          <div className={`font-semibold rounded-xs px-2 w-fit ${activity.event !== 'sync_errored' ? 'bg-green-500/30 text-green-500' :
-                            'bg-red-500/30 text-red-500'}`}>
+                          <div className={`font-semibold rounded-xs px-2 w-fit ${activity.event === "sync_triggered" ? 'bg-indigo-700/30 text-indigo-500' :
+                            activity.event !== 'sync_errored' ? 'bg-green-500/30 text-green-500' :
+                              'bg-red-500/30 text-red-500'}`}>
                             {activity.event}
                           </div>
                         </td>

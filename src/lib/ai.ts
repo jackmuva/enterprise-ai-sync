@@ -23,18 +23,18 @@ export const retrieveContext = async (query: string, userId: string): Promise<Au
       ranking_options: {
         score_threshold: 0.3
       },
-      //filters: {
-      //  type: "eq",
-      //  key: "folder",
-      //  value: userId + "/",
-      //},
-
+      filters: {
+        type: "eq",
+        key: "folder",
+        value: userId + "/",
+      },
     }),
   });
 
   const response: AutoRagSearchResults = await request.json();
   if (response.success) {
     const allowedContext = await enforcePermissionsOnContext(response.result.data, userId);
+    console.log(allowedContext);
     return {
       success: response.success,
       result: {
@@ -68,19 +68,17 @@ const enforcePermissionsOnContext = async (contexts: Array<any>, userId: string)
   //
   //TODO: Swap this chunk code out when permission api is ready
   const permObjects = [
-    { id: "developers.cloudflare.com_autorag_.md" },
-    { id: "developers.cloudflare.com_autorag_concepts_.md" },
-    { id: "developers.cloudflare.com_autorag_concepts_how-autorag-works_.md" },
-    { id: "developers.cloudflare.com_autorag_concepts_what-is-rag_.md" },
-    { id: "developers.cloudflare.com_autorag_configuration_.md" },
+    { id: "autorag_documentation.md" },
+    { id: "rag_core_concepts.md" },
+    { id: "developer_marketing_strategy.md" },
+    { id: "ai_and_rag_webinar.md" },
+    { id: "configuration_guide.md" },
   ];
 
   const permSet = new Set(permObjects.map((obj) => {
     return obj.id;
   }));
-
   //FIX: robust implementation of getting object id
   const allowedContext = contexts.filter((context) => permSet.has(context.filename.split("/").at(-1)));
-  console.log(allowedContext);
   return allowedContext;
 }
