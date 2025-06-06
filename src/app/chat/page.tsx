@@ -42,6 +42,7 @@ export default function Chat() {
 								<div className='flex flex-col space-y-0'>
 									{m.content.length > 0 ? (
 										<div className="prose prose-sm max-w-none dark:prose-invert mt-2 leading-tight">
+											{m.content}
 											<ReactMarkdown
 												remarkPlugins={[remarkGfm]}
 												rehypePlugins={[rehypeRaw]}

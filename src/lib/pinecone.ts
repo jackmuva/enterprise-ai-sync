@@ -49,6 +49,7 @@ class PineconeService {
         topN: 3,
       },
     });
+    console.log(searchWithText.result.hits);
 
     return searchWithText;
   }
@@ -63,28 +64,16 @@ class PineconeService {
     while (end < text.length) {
       end = beg + chunkSize;
       data.push({
+        ...metadata,
         id: v4(),
-        text: end >= text.length ? text.slice(beg) : text.slice(beg, end),
+        chunk_text: end >= text.length ? text.slice(beg) : text.slice(beg, end),
       });
       beg = end - overlap;
     }
 
-    const embeddings = await this._pc.inference.embed(
-      'llama-text-embed-v2',
-      data.map(d => d.text),
-      { inputType: 'passage', truncate: 'END' }
-    );
-
-    const vecs = embeddings.data.map((embedding) => {
-      return {
-        id: v4(),
-        values: embedding.values,
-        metadata: metadata
-      }
-    });
-
     const namespace = this._pc.index(process.env.PINECONE_INDEX!).namespace(namespaceName);
-    await namespace.upsert(vecs);
+    const numUpserted = await namespace.upsertRecords(data);
+    return numUpserted;
   }
 }
 
