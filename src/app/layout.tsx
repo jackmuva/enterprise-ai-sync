@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Enterprise AI",
+  title: "YourApp.AI",
   description: "AI demo for enterprise applications",
 };
 

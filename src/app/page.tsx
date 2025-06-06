@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await userWithToken();
 
   return (
-    <main className="w-dvw flex min-h-screen pt-24 px-3 sm:items-start">
+    <main className="w-dvw flex min-h-screen pt-28 px-3 sm:items-start">
       <IntegrationsSidebar session={session} />
       <DataTableView session={session} />
     </main>

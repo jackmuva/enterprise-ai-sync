@@ -47,7 +47,15 @@ const indexRecordContent = async (user: string, syncId: string, headers: Headers
   try {
     if (metadata.length > 0) {
       //@ts-ignore
-      const numUpserted = pineconeService.upsertText({ text: contentResponse as string, namespaceName: user, metadata: { url: metadata[0].data.url, record_name: metadata[0].data.name } });
+      const numUpserted = pineconeService.upsertText({
+        text: contentResponse as string,
+        namespaceName: user,
+        metadata: {
+          url: metadata[0].data.url,
+          record_name: metadata[0].data.name,
+          source: metadata[0].source
+        }
+      });
       console.log(numUpserted);
       return { success: true }
     }

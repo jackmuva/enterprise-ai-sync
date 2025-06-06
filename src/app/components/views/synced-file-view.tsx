@@ -63,9 +63,6 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
                           <Image height={22} width={22}
                             src={syncedObject.source === "googledrive" ? "/google-drive-logo.png" :
                               syncedObject.source === "box" ? "/box-logo.webp" : "/dropbox-logo.png"} alt="logo" />
-                          <div>
-                            {syncedObject.source}
-                          </div>
                         </td>
                         <td className="text-sm p-2 overflow-hidden whitespace-nowrap text-ellipsis">{JSON.parse(syncedObject.data).name}</td>
                         <td className="text-sm p-2">{new Date(syncedObject.updatedAt.toString()).toString().split("GMT")[0]}</td>

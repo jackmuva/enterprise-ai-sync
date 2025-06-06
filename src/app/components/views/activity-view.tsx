@@ -53,9 +53,6 @@ export const ActivityView = ({ session, selectedObjectType }: { session: { user:
                           <Image height={22} width={22}
                             src={activity.source === "googledrive" ? "/google-drive-logo.png" :
                               activity.source === "box" ? "/box-logo.webp" : "/dropbox-logo.png"} alt="logo" />
-                          <div>
-                            {activity.source}
-                          </div>
                         </td>
                         <td className="text-sm p-2 items-center">
                           <div className={`font-semibold rounded-xs px-2 w-fit ${activity.event === "sync_triggered" ? 'bg-indigo-700/30 text-indigo-500' :

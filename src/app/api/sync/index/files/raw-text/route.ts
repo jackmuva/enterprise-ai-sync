@@ -35,6 +35,7 @@ export async function POST(req: Request) {
 			metadata: {
 				url: body.url,
 				record_name: body.filename,
+				source: body.sync,
 			},
 			namespaceName: body.user.id,
 		});

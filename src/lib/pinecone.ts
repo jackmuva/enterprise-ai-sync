@@ -42,7 +42,7 @@ class PineconeService {
         topK: 5,
         inputs: { text: query },
       },
-      fields: ['chunk_text', 'url', 'record_name'],
+      fields: ['chunk_text', 'url', 'record_name', 'source'],
       rerank: {
         model: 'bge-reranker-v2-m3',
         rankFields: ['chunk_text'],
