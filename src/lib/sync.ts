@@ -15,7 +15,6 @@ interface SyncedRecords {
 export const pullSyncedRecords = async (user: string, syncId: string, headers: Headers, cursor?: string): Promise<Array<string>> => {
   let erroredRecords: Array<string> = []
 
-
   const recordRequest = await fetch(process.env.MANAGED_SYNC_API + `/sync/${syncId}/records?pageSize=100&${cursor ? `cursor=${cursor}` : ""}`, {
     method: "GET",
     headers: headers,

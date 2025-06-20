@@ -16,7 +16,6 @@ interface SyncWebhook {
 	}
 }
 
-//NOTE: need to have different logic for record_update and other webhook types
 export async function POST(req: Request) {
 	const body: SyncWebhook = await req.json();
 

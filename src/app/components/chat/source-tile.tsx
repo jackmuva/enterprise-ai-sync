@@ -7,11 +7,11 @@ export const SourceTile = ({ chunk_text, record_name, source, url }:
 
   return (
     <div
-      className='relative flex space-x-2 w-1/2 p-3 rounded-md border border-slate-300 dark:border-slate-700'
+      className='relative flex items-center space-x-2 w-1/2 p-3 rounded-md border border-slate-300 dark:border-slate-700'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Image height={22} width={22}
+      <Image width={32} height={22}
         src={source === "googledrive" ? "/google-drive-logo.png" :
           source === "box" ? "/box-logo.webp" : "/dropbox-logo.png"} alt="logo" />
       <a href={url} target="_blank" className=" text-sm overflow-hidden whitespace-nowrap text-ellipsis">{record_name}</a>
