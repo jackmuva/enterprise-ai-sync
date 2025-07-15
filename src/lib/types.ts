@@ -4,5 +4,5 @@ export enum SyncedObjectType {
   CRM = "CRM"
 }
 
-export const FILE_STORAGE_INTEGRATIONS = ['googledrive', 'sharepoint', 'dropbox', 'box'];
-export const CRM_INTEGRATIONS = ['salesforce', 'hubspot'];
+export const FILE_STORAGE_INTEGRATIONS = process.env.FILE_STORAGE_INTEGRATIONS?.split(',');
+export const CRM_INTEGRATIONS = process.env.CRM_INTEGRATIONS?.split(',');

@@ -5,10 +5,10 @@ import { authkitMiddleware } from '@workos-inc/authkit-nextjs';
 export default authkitMiddleware({
   middlewareAuth: {
     enabled: true,
-    unauthenticatedPaths: ["/api/sync", "/api/sync/(.*)"],
+    unauthenticatedPaths: ["/icon.png", "/api/sync", "/api/sync/(.*)"],
   },
 });
 
 // Match against pages that require authentication
 // Leave this out if you want authentication on every page in your application
-// export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'] };
+// export const config = { matcher: ['/((?!_next/static|_next/image|icon.png).*)'] };

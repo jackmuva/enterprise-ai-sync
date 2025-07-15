@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export const ActivityView = ({ session, selectedObjectType }: { session: { user: any, paragonUserToken?: string }, selectedObjectType: SyncedObjectType }) => {
   const [expandedRow, setExpandedRows] = useState<Set<string>>(new Set());
-  console.log(selectedObjectType);
   const { data: activities, isLoading, } = useSWR<Array<Activity>>(session ? `/api/activity/?objectType=${selectedObjectType}` : null,
     fetcher, { fallbackData: [] });
 

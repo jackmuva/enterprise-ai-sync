@@ -6,6 +6,7 @@ import { pullSyncedRecords } from "@/lib/sync";
 interface SyncWebhook {
 	event: string,
 	sync: string,
+	syncInstanceId: string,
 	user: {
 		id: string
 	},
@@ -18,10 +19,12 @@ interface SyncWebhook {
 
 export async function POST(req: Request) {
 	const body: SyncWebhook = await req.json();
+	console.log(body);
 
 	try {
 		await createActivity({
 			event: body.event,
+			syncId: body.syncInstanceId,
 			source: body.sync,
 			objectType: body.data.model,
 			receivedAt: new Date(body.data.synced_at),

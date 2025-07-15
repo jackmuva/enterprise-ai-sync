@@ -19,7 +19,6 @@ export async function POST(req: Request) {
 		//NOTE:Need to figure out what user id is returned by sync
 		//const user = getUser(session.user.email);
 		const trigger: TriggerPayload = await req.json();
-		console.log(trigger);
 		const syncRequest = await fetch("https://sync.useparagon.com/api/syncs", {
 			method: "POST",
 			headers: {
@@ -37,6 +36,7 @@ export async function POST(req: Request) {
 			throw new Error("Sync request failed: " + syncRequest.status);
 		}
 		const syncResponse = await syncRequest.json();
+		console.log(syncResponse);
 		const activity = await createActivity({
 			event: "sync_triggered",
 			syncId: syncResponse.id,

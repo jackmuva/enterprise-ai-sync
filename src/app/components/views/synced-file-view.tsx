@@ -1,15 +1,42 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/utils";
 import { SyncedObject } from "@/db/schema";
 import { ChevronDown } from "lucide-react";
 import { SyncedObjectDropdown } from "./synced-object-dropdown";
 import Image from "next/image";
+import { SyncedObjectType } from "@/lib/types";
 
 export function SyncedFilesView({ session, selectedObjectType }: { session: { user: any, paragonUserToken?: string }, selectedObjectType: SyncedObjectType }) {
   const [expandedRow, setExpandedRows] = useState<Set<string>>(new Set());
-  const { data: syncedObjects, isLoading, } = useSWR<Array<SyncedObject>>(session ? `/api/synced-objects/?objectType=${selectedObjectType}` : null,
+  const { data: syncStatus } = useSWR(session ? `/api/sync/check-status?objectType=${selectedObjectType}` : null,
+    fetcher, { fallbackData: [], refreshInterval: 10000 });
+  console.log(syncStatus);
+
+  useEffect(() => {
+    if (syncStatus.refresh) {
+      for (const source of Object.keys(syncStatus.refresh)) {
+        if (syncStatus.refresh[source]) {
+          console.log('refreshing drive');
+          fetch(`${window.location.origin}/api/sync/pull/files`, {
+            method: "POST",
+            body: JSON.stringify({
+              event: "sync_pull",
+              sync: source,
+              data: JSON.stringify(syncStatus.statuses[source]),
+              objectType: selectedObjectType,
+            }),
+          }).then((res) => {
+            console.log(res);
+            mutateObjects();
+          });
+        }
+      }
+    }
+  }, [syncStatus]);
+
+  const { data: syncedObjects, isLoading, mutate: mutateObjects } = useSWR<Array<SyncedObject>>(session ? `/api/synced-objects/?objectType=${selectedObjectType}` : null,
     fetcher, { fallbackData: [] });
 
   const toggleRow = (rowId: string) => {

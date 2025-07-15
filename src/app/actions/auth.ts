@@ -21,7 +21,7 @@ export async function userWithToken() {
         .setIssuedAt()
         .setExpirationTime("24h")
         .sign(PRIVATE_KEY);
-      console.log(paragonUserToken);
+      //console.log(paragonUserToken);
 
       return {
         user,
