@@ -13,11 +13,15 @@ export async function userWithToken() {
 
   if (user) {
     try {
-      const paragonUserToken = await new SignJWT({ sub: user.id, })
+      const paragonUserToken = await new SignJWT({
+        sub: user.id,
+        aud: `useparagon.com/${process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID}`,
+      })
         .setProtectedHeader({ alg: "RS256" })
         .setIssuedAt()
         .setExpirationTime("24h")
         .sign(PRIVATE_KEY);
+      console.log(paragonUserToken);
 
       return {
         user,

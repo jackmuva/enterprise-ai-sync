@@ -2,7 +2,6 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { userWithToken } from '@/app/actions/auth';
-import { retrieveContext } from '@/lib/autorag';
 import { pineconeService } from '@/lib/pinecone';
 
 export const maxDuration = 30;
