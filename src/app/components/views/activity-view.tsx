@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { ChevronDown } from "lucide-react";
 import { ActivityDropdown } from "./activity-dropdown";
-import { SyncedObjectType } from "./data-table-view";
+import { SyncedObjectType } from "@/lib/types";
 import Image from "next/image";
 
 export const ActivityView = ({ session, selectedObjectType }: { session: { user: any, paragonUserToken?: string }, selectedObjectType: SyncedObjectType }) => {
   const [expandedRow, setExpandedRows] = useState<Set<string>>(new Set());
+  console.log(selectedObjectType);
   const { data: activities, isLoading, } = useSWR<Array<Activity>>(session ? `/api/activity/?objectType=${selectedObjectType}` : null,
     fetcher, { fallbackData: [] });
 

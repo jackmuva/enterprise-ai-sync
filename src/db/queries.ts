@@ -121,6 +121,7 @@ export async function getSyncTriggerByUserIdAndSource({ id, source }: { id: stri
 
 export async function createActivity({
   event,
+  syncId,
   source,
   objectType,
   receivedAt,
@@ -128,6 +129,7 @@ export async function createActivity({
   userId,
 }: {
   event: string,
+  syncId: string,
   source: string,
   objectType: string,
   receivedAt: Date,
@@ -137,12 +139,13 @@ export async function createActivity({
   try {
     return await db.insert(activity).values({
       event: event,
+      syncId: syncId,
       source: source,
       objectType: objectType,
       receivedAt: receivedAt,
       data: data,
       userId: userId
-    });
+    }).returning();
   } catch (error) {
     console.error("Failed to create activity in database");
     throw error;

@@ -1,8 +1,10 @@
 "use client";
 
+import { FILE_STORAGE_INTEGRATIONS } from "@/lib/types";
 import useParagon from "@/lib/useParagon";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
+import { useSWRConfig } from "swr";
 
 type IntegrationTileProps = {
   integration: {
@@ -20,6 +22,7 @@ function IntegrationTile({
   onConnect,
 }: IntegrationTileProps) {
   const [expanded, setExpanded] = useState(false);
+  const { mutate } = useSWRConfig();
 
   const handleClick = () => {
     if (integrationEnabled) {
@@ -29,8 +32,18 @@ function IntegrationTile({
     }
   };
 
-  const triggerSync = () => {
-    console.log('syncing');
+  const triggerSync = async () => {
+    const req = await fetch(`${window.location.origin}/api/sync/trigger`, {
+      method: "POST",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify({
+        integration: integration.type,
+        pipeline: "files",
+      }),
+    });
+    const res = await req.json();
+    console.log(res);
+    mutate(`/api/activity/?objectType=${res.activity[0].objectType}`);
   }
 
   return (

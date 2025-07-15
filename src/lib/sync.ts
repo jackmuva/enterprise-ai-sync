@@ -15,7 +15,7 @@ interface SyncedRecords {
 export const pullSyncedRecords = async (user: string, syncId: string, headers: Headers, cursor?: string): Promise<Array<string>> => {
   let erroredRecords: Array<string> = []
 
-  const recordRequest = await fetch(process.env.MANAGED_SYNC_API + `/sync/${syncId}/records?pageSize=100&${cursor ? `cursor=${cursor}` : ""}`, {
+  const recordRequest = await fetch(`https://sync.useparagon.com/sync/${syncId}/records?pageSize=50&${cursor ? `cursor=${cursor}` : ""}`, {
     method: "GET",
     headers: headers,
   });
@@ -34,7 +34,7 @@ export const pullSyncedRecords = async (user: string, syncId: string, headers: H
 }
 
 const indexRecordContent = async (user: string, syncId: string, headers: Headers, recordId: string): Promise<{ success: boolean, erroredRecord?: string }> => {
-  const contentRequest = await fetch(process.env.MANAGED_SYNC_API + `/sync/${syncId}/records/${recordId}/content`,
+  const contentRequest = await fetch(`https://sync.useparagon.com/sync/${syncId}/records/${recordId}/content`,
     {
       method: "GET",
       headers: headers,

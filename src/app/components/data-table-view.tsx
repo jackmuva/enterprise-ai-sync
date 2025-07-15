@@ -3,12 +3,8 @@ import { ChevronDownIcon, File, Newspaper, Users } from "lucide-react";
 import { useState } from "react";
 import { SyncedFilesView } from "./views/synced-file-view";
 import { ActivityView } from "./views/activity-view";
+import { SyncedObjectType } from "@/lib/types";
 
-enum SyncedObjectType {
-  FILE_STORAGE = "File Storage",
-  DOCUMENTS = "Documents",
-  CRM = "CRM"
-}
 
 export const DataTableView = ({ session }: { session: { user: any, paragonUserToken?: string } }) => {
   const [dropdown, setDropdown] = useState(false);
@@ -37,7 +33,7 @@ export const DataTableView = ({ session }: { session: { user: any, paragonUserTo
           <>
             <div className="fixed inset-0 z-10" onClick={closeDropdown} />
             <div className="absolute left-0 mt-2 w-48 bg-background border border-slate-300 dark:border-slate-700 rounded-md shadow-lg z-20">
-              {Object.keys(SyncedObjectType).map((type) => {
+              {Object.keys(SyncedObjectType).map((type: string) => {
                 console.log(type);
                 return (
                   //@ts-ignore
