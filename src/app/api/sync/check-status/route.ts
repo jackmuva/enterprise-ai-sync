@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
 				},
 			});
 			const status = await statusReq.json();
+			console.log(status);
 			statuses[source] = status;
 			if (["IDLE", "ERRORED"].includes(status.status)) {
 				refresh[source] = true;

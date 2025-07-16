@@ -1,11 +1,8 @@
 import { userWithToken } from "@/app/actions/auth";
-import { createActivity } from "@/db/queries";
+import { createActivity, getSyncTriggerByUserIdAndSource, getUser } from "@/db/queries";
 
-interface TriggerPayload {
+interface DisablePayload {
 	integration: string,
-	pipeline: string,
-	configuration?: any,
-	configurationName?: string,
 }
 
 export async function POST(req: Request) {
@@ -16,19 +13,15 @@ export async function POST(req: Request) {
 	}
 
 	try {
-		const trigger: TriggerPayload = await req.json();
-		const syncRequest = await fetch("https://sync.useparagon.com/api/syncs", {
+		const disable: DisablePayload = await req.json();
+		const user = await getUser(session.user.email);
+		const trigger = await getSyncTriggerByUserIdAndSource({ id: user[0].id, source: disable.integration });
+		const syncRequest = await fetch(`https://sync.useparagon.com/api/syncs/${trigger[0].syncId}/disable`, {
 			method: "POST",
 			headers: {
 				"Authorization": `Bearer ${session.paragonUserToken}`,
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({
-				integration: trigger.integration,
-				pipeline: trigger.pipeline,
-				configuration: trigger.configuration ?? {},
-				configurationName: trigger.configurationName ?? "default-config",
-			}),
 		});
 		const syncResponse = await syncRequest.json();
 		console.log(syncResponse);
@@ -36,9 +29,9 @@ export async function POST(req: Request) {
 			throw new Error("Sync request failed: " + syncRequest.status);
 		}
 		const activity = await createActivity({
-			event: "sync_triggered",
+			event: "sync_disabled",
 			syncId: syncResponse.id,
-			source: trigger.integration,
+			source: disable.integration,
 			objectType: "File Storage",
 			receivedAt: new Date(),
 			data: JSON.stringify(syncResponse),
