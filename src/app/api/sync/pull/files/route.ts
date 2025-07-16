@@ -38,7 +38,7 @@ export async function POST(req: Request) {
 		headers.append("Authorization", `Bearer ${session.paragonUserToken}`);
 		headers.append("Content-Type", "application/json");
 
-		const erroredRecords = await pullSyncedRecords(session.user.id, trigger[0].syncId, headers);
+		const erroredRecords = await pullSyncedRecords(session.user.email, trigger[0], headers);
 		return Response.json({
 			status: 200,
 			erroredRecords: erroredRecords

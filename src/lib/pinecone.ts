@@ -12,8 +12,7 @@ class PineconeService {
     const ps = new PineconeService();
 
     try {
-      const desc = await ps._pc.describeIndex(process.env.PINECONE_INDEX!);
-      console.log(desc);
+      await ps._pc.describeIndex(process.env.PINECONE_INDEX!);
     } catch (err) {
       const response = await ps._pc.createIndexForModel({
         name: process.env.PINECONE_INDEX!,

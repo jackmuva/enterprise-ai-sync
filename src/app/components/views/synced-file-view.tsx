@@ -46,7 +46,7 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
       <div className="flex justify-between items-center w-full">
         <h1 className="text-xl font-semibold mb-2">Objects Synced</h1>
         <RefreshCw className="border p-1 border-slate-300 dark:border-slate-700 rounded-md h-fit w-fit 
-        cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700" onClick={pullData} />
+        cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-100" onClick={pullData} />
       </div>
       {isLoading ? (
         <div className="flex flex-col">
