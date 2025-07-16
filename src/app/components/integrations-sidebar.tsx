@@ -39,6 +39,10 @@ function IntegrationTile({
       body: JSON.stringify({
         integration: integration.type,
         pipeline: "files",
+        configuration: {
+          folderId: "4cd6fbf3-ca22-5d1d-813c-e73156f9b012",
+        },
+        configurationName: "drive-config",
       }),
     });
     const res = await req.json();

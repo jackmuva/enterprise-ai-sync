@@ -29,14 +29,14 @@ export async function POST(req: Request) {
 				integration: trigger.integration,
 				pipeline: trigger.pipeline,
 				configuration: trigger.configuration ?? {},
-				configurationName: trigger.configurationName ?? "",
+				configurationName: trigger.configurationName ?? "default-config",
 			}),
 		});
-		if (syncRequest.ok) {
-			throw new Error("Sync request failed: " + syncRequest.status);
-		}
 		const syncResponse = await syncRequest.json();
 		console.log(syncResponse);
+		if (!syncRequest.ok) {
+			throw new Error("Sync request failed: " + syncRequest.status);
+		}
 		const activity = await createActivity({
 			event: "sync_triggered",
 			syncId: syncResponse.id,

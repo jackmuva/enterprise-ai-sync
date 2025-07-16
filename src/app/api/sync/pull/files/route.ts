@@ -24,17 +24,16 @@ export async function POST(req: Request) {
 		if (trigger.length === 0) {
 			console.error("Unable to find Sync Trigger");
 		}
-		console.log(trigger);
 
-		await createActivity({
-			event: body.event,
-			syncId: trigger[0].syncId,
-			source: body.sync,
-			objectType: body.objectType,
-			receivedAt: new Date(),
-			data: JSON.stringify(body.data),
-			userId: session.user.email,
-		});
+		//await createActivity({
+		//	event: body.event,
+		//	syncId: trigger[0].syncId,
+		//	source: body.sync,
+		//	objectType: body.objectType,
+		//	receivedAt: new Date(),
+		//	data: JSON.stringify(body.data),
+		//	userId: session.user.email,
+		//});
 		const headers = new Headers();
 		headers.append("Authorization", `Bearer ${session.paragonUserToken}`);
 		headers.append("Content-Type", "application/json");
