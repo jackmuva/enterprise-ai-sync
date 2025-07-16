@@ -12,20 +12,24 @@ interface SyncedRecords {
   },
 }
 
+//NOTE: page size set to 5 without recursion for demo/testing purposes
 export const pullSyncedRecords = async (user: string, syncId: string, headers: Headers, cursor?: string): Promise<Array<string>> => {
   let erroredRecords: Array<string> = []
 
-  const recordRequest = await fetch(`https://sync.useparagon.com/sync/${syncId}/records?pageSize=50&${cursor ? `cursor=${cursor}` : ""}`, {
+  const recordRequest = await fetch(`https://sync.useparagon.com/sync/${syncId}/records?pageSize=5&${cursor ? `cursor=${cursor}` : ""}`, {
     method: "GET",
     headers: headers,
   });
   const recordResponse: SyncedRecords = await recordRequest.json();
+  console.log("pull synced record response: ", recordResponse);
   for (const data of recordResponse.data) {
     const indexResponse = await indexRecordContent(user, syncId, headers, data.id);
     if (!indexResponse.success && indexResponse.erroredRecord) {
       erroredRecords.push(indexResponse.erroredRecord);
     }
   }
+
+  return erroredRecords;
   if (recordResponse.paging.remaining_records > 0) {
     let newErroredRecords: Array<string> = await pullSyncedRecords(user, syncId, headers, recordResponse.paging.cursor);
     erroredRecords = erroredRecords.concat(newErroredRecords);
@@ -40,7 +44,6 @@ const indexRecordContent = async (user: string, syncId: string, headers: Headers
       headers: headers,
     });
   const metadata: Array<SyncedObject> = await getSyncedObjectById({ id: recordId });
-  // FIX: will need to rework when we now the schema for the content that's returned
   const contentResponse = await contentRequest.json();
 
   try {

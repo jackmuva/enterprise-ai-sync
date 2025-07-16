@@ -7,8 +7,8 @@ import { userWithToken } from "@/app/actions/auth";
 interface FilePull {
 	event: string,
 	sync: string,
-	data: any,
 	objectType: string,
+	data?: any,
 }
 
 export async function POST(req: Request) {
@@ -35,12 +35,11 @@ export async function POST(req: Request) {
 			data: JSON.stringify(body.data),
 			userId: session.user.email,
 		});
-		const paragonToken = await createParagonToken(session.user.email);
 		const headers = new Headers();
-		headers.append("Authorization", `Bearer ${paragonToken}`);
+		headers.append("Authorization", `Bearer ${session.paragonUserToken}`);
 		headers.append("Content-Type", "application/json");
 
-		const erroredRecords = await pullSyncedRecords(session.user.id, trigger[0].id, headers);
+		const erroredRecords = await pullSyncedRecords(session.user.id, trigger[0].syncId, headers);
 		return Response.json({
 			status: 200,
 			erroredRecords: erroredRecords
