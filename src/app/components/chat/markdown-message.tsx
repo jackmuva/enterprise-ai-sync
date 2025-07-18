@@ -86,7 +86,7 @@ export const MarkdownMessage = ({ m }: { m: UIMessage }) => {
                   <div className='flex flex-col space-y-2'>
                     {
                       m.toolInvocations.map((invoke) => {
-                        return invoke.result.result.hits.map((hit) => {
+                        return invoke?.result?.result?.hits?.map((hit: any) => {
                           return (
                             <SourceTile key={hit._id}
                               chunk_text={hit.fields.chunk_text}
@@ -94,7 +94,7 @@ export const MarkdownMessage = ({ m }: { m: UIMessage }) => {
                               url={hit.fields.url}
                               record_name={hit.fields.record_name} />
                           );
-                        })
+                        }) ?? []
                       })
                     }
                   </div>

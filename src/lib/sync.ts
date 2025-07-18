@@ -15,7 +15,6 @@ interface SyncedRecords {
   },
 }
 
-//NOTE: page size set to 5 without recursion for demo/testing purposes
 export const pullSyncedRecords = async (user: string, syncTrigger: Activity, headers: Headers, cursor?: string): Promise<Array<string>> => {
   let erroredRecords: Array<string> = []
 
@@ -25,6 +24,9 @@ export const pullSyncedRecords = async (user: string, syncTrigger: Activity, hea
   });
   const recordResponse: SyncedRecords = await recordRequest.json();
   for (const data of recordResponse.data) {
+    if (data.deleted) {
+      continue;
+    }
     const indexResponse = await indexRecordContent(user, syncTrigger, headers, data);
     if (!indexResponse.success && indexResponse.erroredRecord) {
       erroredRecords.push(indexResponse.erroredRecord);
@@ -42,9 +44,9 @@ const indexRecordContent = async (user: string, syncTrigger: Activity, headers: 
   try {
     await createSyncedObject({
       id: metadata.id,
-      externalId: metadata.external_id,
-      updatedAt: new Date(metadata.updated_at),
-      createdAt: new Date(metadata.created_at),
+      externalId: metadata.externalId,
+      updatedAt: new Date(metadata.updatedAt),
+      createdAt: new Date(metadata.createdAt),
       source: syncTrigger.source,
       objectType: syncTrigger.objectType,
       data: JSON.stringify(metadata),
@@ -75,10 +77,11 @@ const indexRecordContent = async (user: string, syncTrigger: Activity, headers: 
           metadata: {
             url: metadata.url,
             record_name: metadata.name,
+            nativeId: metadata.id,
             source: syncTrigger.source
           }
         });
-        console.log("upserting to pinecone: ", numUpserted);
+        console.log("upserting to pinecone");
       }
     }
     return { success: true }

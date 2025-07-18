@@ -39,7 +39,10 @@ export async function userWithToken() {
 export async function createParagonToken(userId: string) {
   const PRIVATE_KEY = await importPrivateKey(process.env.PARAGON_SIGNING_KEY!);
   try {
-    const paragonUserToken = await new SignJWT({ sub: userId, })
+    const paragonUserToken = await new SignJWT({
+      sub: userId,
+      aud: `useparagon.com/${process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID}`,
+    })
       .setProtectedHeader({ alg: "RS256" })
       .setIssuedAt()
       .setExpirationTime("24h")
