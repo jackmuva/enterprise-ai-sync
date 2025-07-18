@@ -63,23 +63,21 @@ function IntegrationTile({
           <div className="flex items-center">
 
             <div
-              className={`rounded mr-2 p-1 px-2 inline-flex items-center ${integrationEnabled || integration.type === 'box'
+              className={`rounded mr-2 p-1 px-2 inline-flex items-center ${integrationEnabled
                 ? "bg-green-400/30 dark:bg-green-400/30"
                 : "bg-slate-200/30 dark:bg-slate-400/30"
                 }`}
             >
               <div
-                className={`rounded-full h-2 w-2 ${integrationEnabled || integration.type === 'box' ? "bg-green-500" : "bg-slate-300"
+                className={`rounded-full h-2 w-2 ${integrationEnabled ? "bg-green-500" : "bg-slate-300"
                   } mr-1`}
               />
-              <div className={`w-20 flex items-center justify-between text-center text-xs font-semibold ${integrationEnabled || integration.type === 'box'
-                ? "text-green-500 dark:text-green-500"
+              <div className={`w-20 flex items-center justify-between text-center text-xs font-semibold ${integrationEnabled ? "text-green-500 dark:text-green-500"
                 : "text-slate-500 dark:text-slate-500"
                 }`}
               >
-                {/*HACK: box integration*/}
-                {integrationEnabled || integration.type === 'box' ? "Synced" : "Not Synced"}
-                {integrationEnabled || integration.type === 'box' ? (
+                {integrationEnabled ? "Connected" : "Unconnected"}
+                {integrationEnabled ? (
                   <div className={expanded ? "text-muted-foreground justify-center items-center rotate-180" : "text-muted-foreground justify-center items-center"} onClick={handleClick}>
                     <ChevronDownIcon size={15} className="text-green-700" />
                   </div>

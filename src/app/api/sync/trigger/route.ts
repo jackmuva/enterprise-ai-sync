@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 		}
 		const activity = await createActivity({
 			event: "sync_triggered",
-			syncId: syncResponse.id,
+			syncId: "4cd6fbf3-ca22-5d1d-813c-e73156f9b012",//syncResponse.id,
 			source: trigger.integration,
 			objectType: "File Storage",
 			receivedAt: new Date(),

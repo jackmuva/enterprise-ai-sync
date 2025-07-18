@@ -39,11 +39,10 @@ export default function useParagon(paragonUserToken: string) {
 
   useEffect(() => {
     if (!error && paragon) {
-      paragon
-        .authenticate(
-          process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID!,
-          paragonUserToken
-        )
+      paragon.authenticate(
+        process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID!,
+        paragonUserToken
+      )
         .then(updateUser)
         .catch(setError);
     }
