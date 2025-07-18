@@ -66,7 +66,9 @@ const indexRecordContent = async (user: string, syncTrigger: Activity, headers: 
       if (filetype.ext === 'docx') {
         text = (await mammoth.extractRawText({ buffer: Buffer.from(arrayBuffer) })).value;
       } else if (filetype.ext === 'xlsx') {
-        text = XLSX.utils.sheet_to_csv(XLSX.read(arrayBuffer, { type: "array" }));
+        const workbook = XLSX.read(arrayBuffer, { type: "array" });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        text = XLSX.utils.sheet_to_csv(worksheet)
       }
       console.log("text: ", text);
 
