@@ -7,6 +7,7 @@ import { ChevronDown, RefreshCw } from "lucide-react";
 import { SyncedObjectDropdown } from "./synced-object-dropdown";
 import Image from "next/image";
 import { FILE_STORAGE_INTEGRATIONS, SyncedObjectType } from "@/lib/types";
+import { toast } from "sonner";
 
 export function SyncedFilesView({ session, selectedObjectType }: { session: { user: any, paragonUserToken?: string }, selectedObjectType: SyncedObjectType }) {
   const [expandedRow, setExpandedRows] = useState<Set<string>>(new Set());
@@ -26,6 +27,7 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
   }
 
   const pullData = () => {
+    toast("Pulling files from sync");
     for (const integration of FILE_STORAGE_INTEGRATIONS!) {
       fetch(`${window.location.origin}/api/sync/pull/files`, {
         method: "POST",
@@ -35,7 +37,7 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
           data: JSON.stringify(syncStatus.statuses[integration]),
           objectType: selectedObjectType,
         }),
-      }).then((res) => {
+      }).then(() => {
         mutate();
       });
     }

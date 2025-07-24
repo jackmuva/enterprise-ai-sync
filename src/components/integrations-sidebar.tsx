@@ -1,9 +1,9 @@
 "use client";
 
-import { FILE_STORAGE_INTEGRATIONS } from "@/lib/types";
 import useParagon from "@/lib/useParagon";
 import { ArrowDownToLine, ChevronDownIcon, PauseOctagon, Play } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
 type IntegrationTileProps = {
@@ -46,7 +46,7 @@ function IntegrationTile({
       }),
     });
     const res = await req.json();
-    console.log(res);
+    toast("Sync Triggered");
     mutate(`/api/activity/?objectType=${res.activity[0].objectType}`);
   }
 
@@ -58,7 +58,9 @@ function IntegrationTile({
         integration: integration.type,
       }),
     });
-    const res = await req.json();
+    req.json().then(() => {
+      toast("Sync Disabled");
+    });
   }
 
   const resumeSync = async () => {
@@ -69,7 +71,9 @@ function IntegrationTile({
         integration: integration.type,
       }),
     });
-    const res = await req.json();
+    req.json().then(() => {
+      toast("Sync Re-enabled");
+    });
   }
 
   return (

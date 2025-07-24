@@ -66,6 +66,7 @@ export const MarkdownMessage = ({ m }: { m: UIMessage }) => {
       );
     },
   };
+
   return (
     <div key={m.id} className={`rounded-md p-2 ${m.role === "user" ? "bg-muted" : ""}`}>
       <div>

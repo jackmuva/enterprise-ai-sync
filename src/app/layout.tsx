@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthKitProvider } from "@workos-inc/authkit-nextjs/components";
 import { Navbar } from "@/components/navbar/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
+          <Toaster />
           <Navbar />
           <AuthKitProvider>
             {children}

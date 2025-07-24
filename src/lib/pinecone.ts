@@ -128,7 +128,7 @@ class PineconeService {
     return permitted;
   }
 
-  public async upsertText({ text, metadata, namespaceName }: { text: string, metadata: any, namespaceName: string }): Promise<any> {
+  public async upsertText({ text, metadata, namespaceName }: { text: string, metadata: any, namespaceName: string }): Promise<void> {
     const chunkSize = 512;
     const overlap = 20;
     const data = [];
@@ -146,8 +146,17 @@ class PineconeService {
     }
 
     const namespace = this._pc.index(process.env.PINECONE_INDEX!).namespace(namespaceName);
-    const numUpserted = await namespace.upsertRecords(data);
-    return numUpserted;
+
+    let i = 0;
+    while (i <= data.length) {
+      namespace.upsertRecords((i + 96) < data.length ? data.slice(i, i + 96) : data.slice(i))
+        .then(() => {
+          if (i + 96 < data.length) {
+            return new Promise(resolve => setTimeout(resolve, 5000));
+          }
+        });
+      i += 96;
+    }
   }
 }
 
