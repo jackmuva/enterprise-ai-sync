@@ -72,6 +72,7 @@ class PineconeService {
         topN: 3,
       },
     });
+    //@ts-ignore
     const permittedText = await this.enforcePermissions(namespaceName, searchWithText.result.hits);
     console.log(permittedText);
     return permittedText;
