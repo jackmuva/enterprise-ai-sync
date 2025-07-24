@@ -2,7 +2,7 @@
 
 import { FILE_STORAGE_INTEGRATIONS } from "@/lib/types";
 import useParagon from "@/lib/useParagon";
-import { ChevronDownIcon } from "lucide-react";
+import { ArrowDownToLine, ChevronDownIcon, PauseOctagon, Play } from "lucide-react";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 
@@ -50,6 +50,28 @@ function IntegrationTile({
     mutate(`/api/activity/?objectType=${res.activity[0].objectType}`);
   }
 
+  const pauseSync = async () => {
+    const req = await fetch(`${window.location.origin}/api/sync/disable`, {
+      method: "POST",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify({
+        integration: integration.type,
+      }),
+    });
+    const res = await req.json();
+  }
+
+  const resumeSync = async () => {
+    const req = await fetch(`${window.location.origin}/api/sync/reenable`, {
+      method: "POST",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify({
+        integration: integration.type,
+      }),
+    });
+    const res = await req.json();
+  }
+
   return (
     <div className="w-full mb-2 mr-2 rounded-lg" key={integration.type}>
       <div className="border border-slate-300 dark:border-slate-700 rounded">
@@ -89,15 +111,30 @@ function IntegrationTile({
         </div>
         {expanded ? (
           <div className="border-slate-300 dark:border-slate-700 border-t p-4 pt-2">
-            <div className="flex justify-between flex-row space-x-2">
+            <div className="flex flex-col space-y-2 items-start">
               <button
-                className="text-sm rounded-md px-2 py-1 mt-3 text-white bg-indigo-700 cursor-pointer hover:bg-muted"
+                className="w-fit text-sm cursor-pointer space-x-1 flex items-center"
                 onClick={() => triggerSync()}
               >
-                Enable Sync
+                <ArrowDownToLine size={15} />
+                <p className="hover:underline">Trigger Sync</p>
               </button>
               <button
-                className="text-sm rounded-md px-2 py-1 border border-slate-300 dark:border-slate-700 cursor-pointer mt-3 hover:bg-muted"
+                className="w-fit text-sm cursor-pointer space-x-1 flex items-center"
+                onClick={() => pauseSync()}
+              >
+                <PauseOctagon size={15} />
+                <p className="hover:underline">Disable Sync</p>
+              </button>
+              <button
+                className="w-fit text-sm cursor-pointer space-x-1 flex items-center"
+                onClick={() => resumeSync()}
+              >
+                <Play size={15} />
+                <p className="hover:underline">Re-enable Sync</p>
+              </button>
+              <button
+                className="w-fit text-sm rounded-md px-2 py-1 border border-slate-300 dark:border-slate-700 cursor-pointer hover:bg-muted"
                 onClick={() => onConnect()}
               >
                 Configure
