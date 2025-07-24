@@ -1,6 +1,6 @@
 import { userWithToken } from "./actions/auth";
-import { DataTableView } from "./components/data-table-view";
-import IntegrationsSidebar from "./components/integrations-sidebar";
+import { DataTableView } from "@/components/data-table-view";
+import IntegrationsSidebar from "@/components/integrations-sidebar";
 
 export default async function Home() {
   const session = await userWithToken();

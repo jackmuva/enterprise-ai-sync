@@ -1,5 +1,5 @@
 import { userWithToken } from "@/app/actions/auth";
-import { UserDropdown } from "@/app/components/navbar/user-dropdown";
+import { UserDropdown } from "@/components/navbar/user-dropdown";
 import Image from "next/image";
 import { TabBar } from "../navbar/tab-bar";
 

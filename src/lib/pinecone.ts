@@ -83,6 +83,9 @@ class PineconeService {
     const chunkMap = new Map();
     for (const chunk of chunks) {
       const trigger = await getSyncTriggerByUserIdAndSource({ id: email, source: chunk.fields.source });
+      if (trigger.length === 0) {
+        continue;
+      }
       syncMap.set(chunk.fields.source, trigger[0].syncId);
       chunkMap.set(chunk.fields.nativeId, chunk);
       if (sourceMap.has(chunk.fields.source)) {
