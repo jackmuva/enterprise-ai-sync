@@ -45,7 +45,7 @@ export function SyncedFilesView({ session, selectedObjectType }: { session: { us
     <div className="rounded-md border border-slate-300 dark:border-slate-700 p-3 h-80 max-w-[900px] overflow-y-scroll">
       <div className="flex justify-between items-center w-full">
         <h1 className="text-xl font-semibold mb-2">Objects Synced</h1>
-        <RefreshCw className="border p-1 border-slate-300 dark:border-slate-700 rounded-md h-fit w-fit 
+        <RefreshCw size={25} className="border p-1 border-slate-300 dark:border-slate-700 rounded-md 
         cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-100" onClick={pullData} />
       </div>
       {isLoading ? (
