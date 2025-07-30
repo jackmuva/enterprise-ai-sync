@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 				parameters: z.object({
 					question: z.string().describe('the users question'),
 				}),
-				execute: async ({ question }) => pineconeService.retrieveContext({ query: question, namespaceName: session.user?.email! }),
+				execute: async ({ question }) => pineconeService.retrieveContext({ query: question, namespaceName: session.user?.email!, token: session.paragonUserToken ?? "" }),
 			}),
 		},
 	});

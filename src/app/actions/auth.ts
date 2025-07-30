@@ -37,6 +37,7 @@ export async function userWithToken() {
 //export const auth = userWithToken;
 
 export async function createParagonToken(userId: string) {
+  console.log('token user: ', userId);
   const PRIVATE_KEY = await importPrivateKey(process.env.PARAGON_SIGNING_KEY!);
   try {
     const paragonUserToken = await new SignJWT({

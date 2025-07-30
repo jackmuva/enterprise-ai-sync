@@ -14,8 +14,8 @@ export async function POST(req: Request) {
 
 	try {
 		const disable: DisablePayload = await req.json();
-		const user = await getUser(session.user.email);
-		const trigger = await getSyncTriggerByUserIdAndSource({ id: user[0].id, source: disable.integration });
+		const trigger = await getSyncTriggerByUserIdAndSource({ id: session.user.email, source: disable.integration });
+		console.log('trigger: ', trigger);
 		const syncRequest = await fetch(`https://sync.useparagon.com/api/syncs/${trigger[0].syncId}/disable`, {
 			method: "POST",
 			headers: {

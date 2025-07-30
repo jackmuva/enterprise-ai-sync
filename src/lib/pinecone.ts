@@ -1,5 +1,4 @@
-import { createParagonToken } from '@/app/actions/auth';
-import { getSyncTriggerByUserIdAndSource, getUser } from '@/db/queries';
+import { getSyncTriggerByUserIdAndSource } from '@/db/queries';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { v4 } from 'uuid';
 
@@ -58,7 +57,7 @@ class PineconeService {
     return ps;
   };
 
-  public async retrieveContext({ query, namespaceName }: { query: string, namespaceName: string }): Promise<any> {
+  public async retrieveContext({ query, namespaceName, token }: { query: string, namespaceName: string, token: string }): Promise<any> {
     const namespace = this._pc.index(process.env.PINECONE_INDEX!).namespace(namespaceName);
     const searchWithText = await namespace.searchRecords({
       query: {
@@ -72,22 +71,25 @@ class PineconeService {
         topN: 3,
       },
     });
+    //return searchWithText;
     //@ts-ignore
-    const permittedText = await this.enforcePermissions(namespaceName, searchWithText.result.hits);
-    console.log(permittedText);
+    const permittedText = await this.enforcePermissions(namespaceName, token, searchWithText.result.hits);
+    console.log('permitted: ', permittedText);
     return permittedText;
   }
 
-  private async enforcePermissions(email: string, chunks: Array<Chunk>) {
+  private async enforcePermissions(email: string, token: string, chunks: Array<Chunk>) {
     const syncMap = new Map();
     const sourceMap = new Map();
     const chunkMap = new Map();
     for (const chunk of chunks) {
-      const trigger = await getSyncTriggerByUserIdAndSource({ id: email, source: chunk.fields.source });
-      if (trigger.length === 0) {
-        continue;
+      if (!syncMap.has(chunk.fields.source)) {
+        const trigger = await getSyncTriggerByUserIdAndSource({ id: email, source: chunk.fields.source });
+        if (trigger.length === 0) {
+          continue;
+        }
+        syncMap.set(chunk.fields.source, trigger[0].syncId);
       }
-      syncMap.set(chunk.fields.source, trigger[0].syncId);
       chunkMap.set(chunk.fields.nativeId, chunk);
       if (sourceMap.has(chunk.fields.source)) {
         const cur = sourceMap.get(chunk.fields.source);
@@ -106,7 +108,6 @@ class PineconeService {
     }
 
     const permitted = [];
-    const token = await createParagonToken(email);
     for (const sync of syncMap.keys()) {
       const checkReq = await fetch(`https://sync.useparagon.com/api/permissions/${syncMap.get(sync)}/batch-check`, {
         method: "POST",
@@ -118,10 +119,14 @@ class PineconeService {
           checks: sourceMap.get(sync)
         }),
       });
+      if (!checkReq.ok) {
+        console.error("Error checking permissions: ", checkReq.statusText);
+        continue;
+      }
       const checkResponse: { result: Array<PermissionsResponse> } = await checkReq.json();
       for (const check of checkResponse.result) {
         if (check.allowed) {
-          permitted.push(chunkMap.get(check.request.object));
+          permitted.push(chunkMap.get(check.request.object.split(":")[1]));
         }
       }
     }
